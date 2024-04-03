@@ -11,8 +11,10 @@ export const StagePage = () => {
       </Left>
 
       <Main>
-        <Stage></Stage>
-        <ImgPlaceholder imgWidth={1000} imgHeight={2000}></ImgPlaceholder>
+        <div className="flex justify-center p-2">
+          <Stage></Stage>
+          <ImgPlaceholder imgWidth={3000} imgHeight={2000}></ImgPlaceholder>
+        </div>
       </Main>
     </div>
   );

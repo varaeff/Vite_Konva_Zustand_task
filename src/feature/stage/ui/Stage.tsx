@@ -147,7 +147,10 @@ export const Stage: FC<StageProps> = () => {
         ref={stageRef}
         width={size.width}
         height={size.height}
-        className={classNames("absolute z-20 mx-auto", `cursor-${cursor}`)}
+        className={classNames(
+          "absolute top-0 left-0 z-20 mx-auto",
+          `cursor-${cursor}`
+        )}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}

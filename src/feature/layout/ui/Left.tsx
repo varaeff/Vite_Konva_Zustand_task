@@ -30,10 +30,10 @@ export const Left: FC<LeftProps> = ({ children }) => {
         style={{ width: `${width / 16}rem` }}
       >
         <div className="">
-          <div className="sticky top-0 z-20 w-full ">
+          <div className="sticky top-0 z-20 w-full p-2">
             <Button
               variant="icon"
-              className="m-2 h-8 w-full justify-start truncate border-0 p-1"
+              className=" h-8 w-full justify-start truncate border-0"
             >
               <div className=" truncate ">user@email.com</div>
             </Button>

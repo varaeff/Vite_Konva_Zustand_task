@@ -65,8 +65,7 @@ export const ImgPlaceholder = ({
   }, [width, height]);
 
   return (
-    <div className="flex justify-center ">
       <img ref={ref} src={src} className="mx-auto max-h-screen" />
-    </div>
+    
   );
 };
