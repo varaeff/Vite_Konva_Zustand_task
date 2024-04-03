@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    @apply border-gray-300 dark:border-gray-600;
+    outline-color: var(--tw-ring-color);
+  }
+}
+.bg {
+  @apply bg-white dark:bg-zinc-800;
+
+}
+body {
+  @apply bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-200;
+  color-scheme: dark light;
+  overflow-y: hidden;
+}
+@layer utilities {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-500/50;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-500/80;
+  }
+}
