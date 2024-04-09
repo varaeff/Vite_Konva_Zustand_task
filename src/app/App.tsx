@@ -2,7 +2,7 @@ import { ROUTES } from "@/feature/router";
 import { StagePage } from "@/page/StagePage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-let router = createBrowserRouter([
+const router = createBrowserRouter([
   {
     path: ROUTES.HOME,
     element: <StagePage />,

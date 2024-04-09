@@ -12,9 +12,9 @@ export const Left: FC<LeftProps> = ({ children }) => {
     s.setLeftWidth,
   ]);
 
-  let clamp = (x: number) => (x <= 100 ? 100 : x >= 400 ? 400 : x);
+  const clamp = (x: number) => (x <= 100 ? 100 : x >= 400 ? 400 : x);
 
-  let { moveProps } = useMove({
+  const { moveProps } = useMove({
     onMove(e) {
       setWidth(clamp(width + e.deltaX));
     },

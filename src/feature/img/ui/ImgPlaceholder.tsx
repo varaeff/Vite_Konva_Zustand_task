@@ -1,4 +1,3 @@
-// import { useStage } from "@/feature/stage";
 import { useStage } from "@/feature/stage";
 import { useEffect, useRef, useState } from "react";
 import { useResizeObserver } from "usehooks-ts";
@@ -18,8 +17,8 @@ export const ImgPlaceholder = ({
   background = "#cccccc",
   color = "#6a6a6a",
   text = "Placeholder",
-  ...props
-}: PlaceholderProps) => {
+}: // ...props
+PlaceholderProps) => {
   const ref = useRef<HTMLImageElement | null>(null);
   const { width = 0, height = 0 } = useResizeObserver({
     ref: ref,
@@ -62,10 +61,7 @@ export const ImgPlaceholder = ({
 
   useEffect(() => {
     stage.setSize({ width, height });
-  }, [width, height]);
+  }, [width, height]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return (
-      <img ref={ref} src={src} className="mx-auto max-h-screen" />
-    
-  );
+  return <img ref={ref} src={src} className="mx-auto max-h-screen" />;
 };

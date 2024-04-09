@@ -51,7 +51,7 @@ export const Stage: FC<StageProps> = () => {
     setDragging(null);
 
     switch (mode) {
-      case SHAPE.SEGMENT:
+      case SHAPE.SEGMENT: {
         const segmentID = generateId();
         const endID = generateId();
         addShape(
@@ -68,7 +68,8 @@ export const Stage: FC<StageProps> = () => {
           draggingElementID: endID,
         });
         break;
-      case SHAPE.CIRCLE:
+      }
+      case SHAPE.CIRCLE: {
         const circleID = generateId();
         const centerID = generateId();
         const ringID = generateId();
@@ -85,8 +86,8 @@ export const Stage: FC<StageProps> = () => {
           id: circleID,
           draggingElementID: ringID,
         });
-
         break;
+      }
       default:
         break;
     }
@@ -107,7 +108,7 @@ export const Stage: FC<StageProps> = () => {
     }
   };
 
-  const handleMouseUp = (e: Konva.KonvaEventObject<MouseEvent>) => {
+  const handleMouseUp = () => {
     setDragging(null);
   };
 
@@ -159,7 +160,7 @@ export const Stage: FC<StageProps> = () => {
         <Layer>
           {[...shapes.values()].map((shape) => {
             switch (shape.mode) {
-              case SHAPE.SEGMENT:
+              case SHAPE.SEGMENT: {
                 const scaledStart = {
                   id: shape.start.id,
                   x: shape.start.x / pixelRatio,
@@ -225,8 +226,8 @@ export const Stage: FC<StageProps> = () => {
                     />
                   </Group>
                 );
-
-              case SHAPE.CIRCLE:
+              }
+              case SHAPE.CIRCLE: {
                 const scaledCenter = {
                   id: shape.center.id,
                   x: shape.center.x / pixelRatio,
@@ -289,6 +290,7 @@ export const Stage: FC<StageProps> = () => {
                     </Group>
                   </>
                 );
+              }
             }
           })}
         </Layer>

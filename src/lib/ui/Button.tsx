@@ -15,7 +15,7 @@ export interface ButtonProps extends RACButtonProps {
   positionInGroup?: keyof PositionInButtonGroup;
 }
 
-let buttonStyles = tv({
+const buttonStyles = tv({
   extend: focusRing,
   base: "cursor-pointer select-none rounded-md border border-black/10 px-3 py-1 text-center text-sm transition focus:outline-none dark:border-white/10",
   variants: {
@@ -75,7 +75,7 @@ export interface PositionInButtonGroup {
   end: string;
 }
 
-let buttonGroupStyles = tv({
+const buttonGroupStyles = tv({
   base: "",
 });
 

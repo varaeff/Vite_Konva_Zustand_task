@@ -2,7 +2,8 @@ import { produce } from "immer";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { SHAPE } from "@/feature/shapes";
-import { Size, Shape, Point, Pos } from "./types";
+// import { Size, Shape, Point, Pos } from "./types";
+import { Size, Shape, Pos } from "./types";
 import { getDistance } from "./lib";
 
 interface StageState {
@@ -37,7 +38,7 @@ export const useStage = create<StageState>()(
         addShape: (shape: Shape, activeID?: string) =>
           set(
             produce((state: StageState) => {
-              const { width, height } = state.size;
+              // const { width, height } = state.size;
 
               switch (shape.mode) {
                 case SHAPE.SEGMENT:
