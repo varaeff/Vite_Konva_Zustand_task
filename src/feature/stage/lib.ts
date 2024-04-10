@@ -21,14 +21,16 @@ export const getDistance = (point1: Pos, point2: Pos) => {
 
 export enum CURSOR {
   DEFAULT = "auto",
-  CROSSHAIR = "crosshair",
   GRAB = "grab",
+  CROSSHAIR = "crosshair",
+  TEXT = "text",
 }
 
 const shapeToPointerMap = {
   [SHAPE.DRAG]: CURSOR.GRAB,
   [SHAPE.SEGMENT]: CURSOR.CROSSHAIR,
   [SHAPE.CIRCLE]: CURSOR.CROSSHAIR,
+  [SHAPE.TEXT]: CURSOR.TEXT,
 };
 
 export const getCursorStyle = (shapeType: SHAPE) => {

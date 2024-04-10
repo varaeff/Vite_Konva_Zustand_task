@@ -33,4 +33,10 @@ export interface Circle {
   ring: Ring;
 }
 
-export type Shape = Segment | Circle;
+export interface Text {
+  mode: SHAPE.TEXT;
+  id: string;
+  pos: Point;
+}
+
+export type Shape = Segment | Circle | Text;

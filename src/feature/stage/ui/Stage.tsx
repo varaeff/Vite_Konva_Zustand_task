@@ -7,6 +7,7 @@ import {
   Group,
   Circle,
   Ring,
+  Text,
 } from "react-konva";
 import { CURSOR, generateId, getCursorStyle, useStage } from "..";
 import { useShapes, SHAPE } from "@/feature/shapes";
@@ -85,6 +86,23 @@ export const Stage: FC<StageProps> = () => {
         setDragging({
           id: circleID,
           draggingElementID: ringID,
+        });
+        break;
+      }
+      case SHAPE.TEXT: {
+        const textID = generateId();
+        const posID = generateId();
+        addShape(
+          {
+            id: textID,
+            mode,
+            pos: { id: posID, x: pos.x, y: pos.y },
+          },
+          textID
+        );
+        setDragging({
+          id: textID,
+          draggingElementID: posID,
         });
         break;
       }
@@ -242,53 +260,81 @@ export const Stage: FC<StageProps> = () => {
                 };
 
                 return (
-                  <>
-                    <Group
+                  <Group
+                    key={shape.id}
+                    onMouseEnter={handleGroupMouseEnter}
+                    onMouseLeave={handleGroupMouseLeave}
+                  >
+                    <Circle
+                      {...scaledCenter}
+                      radius={6}
+                      stroke="white"
+                      strokeWidth={2}
+                      draggable
+                      onDragMove={(e) => {
+                        dragElement(
+                          shape.id,
+                          scaledCenter.id,
+                          e.target.position()
+                        );
+                      }}
+                      dragBoundFunc={dragBoundFunc}
+                    />
+                    <Ring
+                      {...scaledRing}
+                      x={scaledCenter.x}
+                      y={scaledCenter.y}
+                      innerRadius={scaledRing.radius}
+                      outerRadius={scaledRing.radius + 2}
+                      stroke="transparent"
+                      fill="blue"
+                      strokeWidth={6}
+                      draggable
+                      onDragMove={(e) => {
+                        const pos = e.target.getStage()?.getPointerPosition();
+
+                        if (pos) {
+                          e.target.setAttr("x", scaledCenter.x);
+                          e.target.setAttr("y", scaledCenter.y);
+                          dragElement(shape.id, scaledRing.id, pos);
+                        }
+
+                        e.cancelBubble = true;
+                        return false;
+                      }}
+                      dragBoundFunc={dragBoundFunc}
+                    />
+                  </Group>
+                );
+              }
+              case SHAPE.TEXT: {
+                const scaledPos = {
+                  id: shape.pos.id,
+                  x: shape.pos.x / pixelRatio,
+                  y: shape.pos.y / pixelRatio,
+                };
+                return (
+                  <Group
+                    key={shape.id}
+                    onMouseEnter={handleGroupMouseEnter}
+                    onMouseLeave={handleGroupMouseLeave}
+                  >
+                    <Text
+                      id={shape.id}
                       key={shape.id}
-                      onMouseEnter={handleGroupMouseEnter}
-                      onMouseLeave={handleGroupMouseLeave}
-                    >
-                      <Circle
-                        {...scaledCenter}
-                        radius={6}
-                        stroke="white"
-                        strokeWidth={2}
-                        draggable
-                        onDragMove={(e) => {
-                          dragElement(
-                            shape.id,
-                            scaledCenter.id,
-                            e.target.position()
-                          );
-                        }}
-                        dragBoundFunc={dragBoundFunc}
-                      />
-                      <Ring
-                        {...scaledRing}
-                        x={scaledCenter.x}
-                        y={scaledCenter.y}
-                        innerRadius={scaledRing.radius}
-                        outerRadius={scaledRing.radius + 2}
-                        stroke="transparent"
-                        fill="blue"
-                        strokeWidth={6}
-                        draggable
-                        onDragMove={(e) => {
-                          const pos = e.target.getStage()?.getPointerPosition();
-
-                          if (pos) {
-                            e.target.setAttr("x", scaledCenter.x);
-                            e.target.setAttr("y", scaledCenter.y);
-                            dragElement(shape.id, scaledRing.id, pos);
-                          }
-
-                          e.cancelBubble = true;
-                          return false;
-                        }}
-                        dragBoundFunc={dragBoundFunc}
-                      />
-                    </Group>
-                  </>
+                      x={scaledPos.x}
+                      y={scaledPos.y}
+                      text={"TEST"}
+                      fontSize={30}
+                      fontFamily={"Calibri"}
+                      fill={"blue"}
+                      draggable
+                      dragBoundFunc={dragBoundFunc}
+                      onDragMove={(e) => {
+                        dragElement(shape.id, shape.id, e.target.position());
+                      }}
+                    />
+                  </Group>
                 );
               }
             }

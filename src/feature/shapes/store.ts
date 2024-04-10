@@ -9,7 +9,6 @@ export interface ShapesState {
 
 export const useShapes = create<ShapesState>()(
   devtools(
-    // (set, get) => {
     (set) => {
       return {
         mode: SHAPE.DRAG,

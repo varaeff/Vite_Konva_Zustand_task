@@ -2,7 +2,6 @@ import { produce } from "immer";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { SHAPE } from "@/feature/shapes";
-// import { Size, Shape, Point, Pos } from "./types";
 import { Size, Shape, Pos } from "./types";
 import { getDistance } from "./lib";
 
@@ -74,7 +73,17 @@ export const useStage = create<StageState>()(
                       radius: shape.ring.radius,
                     },
                   });
+                  break;
 
+                case SHAPE.TEXT:
+                  state.shapes.set(shape.id, {
+                    ...shape,
+                    pos: {
+                      ...shape.pos,
+                      x: shape.pos.x * state.yPixelRatio,
+                      y: shape.pos.y * state.yPixelRatio,
+                    },
+                  });
                   break;
 
                 default:
@@ -162,7 +171,13 @@ export const useStage = create<StageState>()(
                         ...boundedPos,
                       };
                     }
+                    break;
 
+                  case SHAPE.TEXT:
+                    shape.pos = {
+                      ...shape.pos,
+                      ...boundedPos,
+                    };
                     break;
 
                   default:
@@ -182,6 +197,7 @@ export const useStage = create<StageState>()(
             false,
             "clean"
           ),
+
         deleteShapes: (ids: Set<string>) =>
           set(
             produce((state: StageState) => {

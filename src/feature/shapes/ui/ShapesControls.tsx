@@ -1,8 +1,10 @@
-import { PiLineSegment } from "react-icons/pi";
 import { Button } from "@/lib/ui";
 import { SHAPE, useShapes } from "@/feature/shapes";
 import { LiaHandPaper } from "react-icons/lia";
+import { PiLineSegment } from "react-icons/pi";
 import { LuCircleDot } from "react-icons/lu";
+import { RxText } from "react-icons/rx";
+
 export const ShapesControls = () => {
   const [selectedShape, setSelectedShape] = useShapes((s) => [
     s.mode,
@@ -34,6 +36,14 @@ export const ShapesControls = () => {
           onPress={() => setSelectedShape(SHAPE.CIRCLE)}
         >
           <LuCircleDot className="h-5 w-5" />
+        </Button>
+
+        <Button
+          variant={"icon"}
+          isActive={selectedShape === SHAPE.TEXT}
+          onPress={() => setSelectedShape(SHAPE.TEXT)}
+        >
+          <RxText className="h-5 w-5" />
         </Button>
       </div>
     </div>
