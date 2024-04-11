@@ -21,6 +21,7 @@ interface StageState {
   setSize: (val: Size) => void;
   clean: () => void;
   deleteShapes: (ids: Set<string>) => void;
+  setShapeText: (id: string, text: string) => void;
 }
 
 export const useStage = create<StageState>()(
@@ -98,6 +99,7 @@ export const useStage = create<StageState>()(
             false,
             "addShape"
           ),
+
         setSize: (val: Size) =>
           set(
             produce((state: StageState) => {
@@ -108,6 +110,7 @@ export const useStage = create<StageState>()(
             false,
             "setSize"
           ),
+
         changeShape: (
           id: string,
           newVal: Partial<Omit<Shape, "id" | "mode">>
@@ -122,6 +125,7 @@ export const useStage = create<StageState>()(
             false,
             "changeShape"
           ),
+
         dragElement: (id: string, draggingElementID: string, pos: Pos) =>
           set(
             produce((state: StageState) => {
@@ -207,6 +211,19 @@ export const useStage = create<StageState>()(
             }),
             false,
             "deleteShapes"
+          ),
+
+        setShapeText: (id: string, text: string) =>
+          set(
+            produce((state: StageState) => {
+              const shape = state.shapes.get(id);
+
+              if (shape && shape.mode === SHAPE.TEXT) {
+                shape.text = text;
+              }
+            }),
+            false,
+            "setShapeText"
           ),
       };
     },

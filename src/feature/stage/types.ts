@@ -37,6 +37,7 @@ export interface Text {
   mode: SHAPE.TEXT;
   id: string;
   pos: Point;
+  text: string;
 }
 
 export type Shape = Segment | Circle | Text;

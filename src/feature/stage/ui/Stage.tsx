@@ -1,4 +1,12 @@
-import { FC, useRef, useEffect, useState, useMemo } from "react";
+import {
+  FC,
+  useRef,
+  useEffect,
+  useState,
+  useMemo,
+  ChangeEvent,
+  KeyboardEvent,
+} from "react";
 import Konva from "konva";
 import {
   Stage as KonvaStage,
@@ -12,6 +20,7 @@ import {
 import { CURSOR, generateId, getCursorStyle, useStage } from "..";
 import { useShapes, SHAPE } from "@/feature/shapes";
 import classNames from "classnames";
+import { EditableTextInput } from "./EditableTextInput";
 
 interface StageProps {}
 interface DraggingShape {
@@ -21,11 +30,21 @@ interface DraggingShape {
 
 export const Stage: FC<StageProps> = () => {
   const stageRef = useRef<Konva.Stage>(null);
-  const [size, shapes, addShape, dragElement, pixelRatio] = useStage((s) => [
+  const [
+    size,
+    shapes,
+    addShape,
+    dragElement,
+    setShapeText,
+    deleteShapes,
+    pixelRatio,
+  ] = useStage((s) => [
     s.size,
     s.shapes,
     s.addShape,
     s.dragElement,
+    s.setShapeText,
+    s.deleteShapes,
     s.yPixelRatio,
   ]);
 
@@ -33,9 +52,54 @@ export const Stage: FC<StageProps> = () => {
 
   const [dragging, setDragging] = useState<DraggingShape | null>(null);
   const [cursor] = useState<CURSOR>(getCursorStyle(mode));
+  const [isEditingID, setIsEditingID] = useState<string>("");
+  const [text, setText] = useState<string>("");
+
+  function handleTextChange(e: ChangeEvent<HTMLTextAreaElement>) {
+    setText(e.currentTarget.value);
+  }
+
+  useEffect(() => {
+    shapes.forEach((shape) => {
+      if (shape.mode === SHAPE.TEXT && isEditingID === shape.id) {
+        setText(shape.text);
+      }
+    });
+  }, [isEditingID, shapes]);
+
+  const blurHandler = () => {
+    if (text.trim()) {
+      setShapeText(isEditingID, text);
+    } else {
+      deleteShapes(new Set([isEditingID]));
+    }
+    setIsEditingID("");
+    setText("");
+  };
+
+  const handleKeyPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter") {
+      blurHandler();
+      return;
+    }
+    if (e.key === "Escape" || e.key === "Delete") {
+      deleteShapes(new Set([isEditingID]));
+      setIsEditingID("");
+      return;
+    }
+  };
+
+  const handleTextDoubleClick = (shapeId: string) => {
+    setIsEditingID(shapeId);
+  };
 
   const handleMouseDown = (e: Konva.KonvaEventObject<MouseEvent>) => {
     const stage = e.target.getStage();
+
+    if (isEditingID) {
+      blurHandler();
+    }
+
     if (!stage) {
       return;
     }
@@ -97,6 +161,7 @@ export const Stage: FC<StageProps> = () => {
             id: textID,
             mode,
             pos: { id: posID, x: pos.x, y: pos.y },
+            text: "",
           },
           textID
         );
@@ -104,6 +169,7 @@ export const Stage: FC<StageProps> = () => {
           id: textID,
           draggingElementID: posID,
         });
+        setIsEditingID(textID);
         break;
       }
       default:
@@ -313,27 +379,39 @@ export const Stage: FC<StageProps> = () => {
                   x: shape.pos.x / pixelRatio,
                   y: shape.pos.y / pixelRatio,
                 };
+
                 return (
                   <Group
                     key={shape.id}
                     onMouseEnter={handleGroupMouseEnter}
                     onMouseLeave={handleGroupMouseLeave}
                   >
-                    <Text
-                      id={shape.id}
-                      key={shape.id}
-                      x={scaledPos.x}
-                      y={scaledPos.y}
-                      text={"TEST"}
-                      fontSize={30}
-                      fontFamily={"Calibri"}
-                      fill={"blue"}
-                      draggable
-                      dragBoundFunc={dragBoundFunc}
-                      onDragMove={(e) => {
-                        dragElement(shape.id, shape.id, e.target.position());
-                      }}
-                    />
+                    {isEditingID === shape.id && (
+                      <EditableTextInput
+                        x={scaledPos.x}
+                        y={scaledPos.y}
+                        value={text}
+                        onChange={handleTextChange}
+                        onKeyDown={handleKeyPress}
+                      />
+                    )}
+                    {isEditingID !== shape.id && (
+                      <Text
+                        id={shape.id}
+                        key={shape.id}
+                        x={scaledPos.x}
+                        y={scaledPos.y}
+                        text={shape.text}
+                        fontSize={30}
+                        fill={"rgb(37 99 235)"}
+                        draggable
+                        dragBoundFunc={dragBoundFunc}
+                        onDragMove={(e) => {
+                          dragElement(shape.id, shape.id, e.target.position());
+                        }}
+                        onDblClick={() => handleTextDoubleClick(shape.id)}
+                      />
+                    )}
                   </Group>
                 );
               }

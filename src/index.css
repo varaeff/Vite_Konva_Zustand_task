@@ -12,12 +12,12 @@
 }
 .bg {
   @apply bg-white dark:bg-zinc-800;
-
 }
 body {
   @apply bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-200;
   color-scheme: dark light;
   overflow-y: hidden;
+  font-family: "Open Sans", sans-serif;
 }
 @layer utilities {
   ::-webkit-scrollbar {
