@@ -1,30 +1,10 @@
-# React + TypeScript + Vite
+В проекте реализован начальный функционал для рисования фигур поверх изображения.
+Используется Konva, Zustand, Immer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Нужно добавить функционал для сценария:
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- Пользователь выбирает в списке инструментов слева инструмент “Текст”
+- Размещает в области изображения контейнер для текста (стандартный механизм, как в графических редакторах). Параметры текста (цвет, размер и тп) можно захардкодить
+- Кликнув на существующий контейнер, его содержание можно отредактировать
+- При перетаскивании контейнера, его положение должно передаваться в store
+- При нажатии Esc текущий не сохранённый контейнер с текстом удаляется
